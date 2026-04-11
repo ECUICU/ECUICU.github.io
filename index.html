@@ -161,7 +161,7 @@
 
     <section class="hero">
         <div class="hero-video-wrapper">
-            <video controls autoplay loop muted playsinline webkit-playsinline class="hero-video" poster="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2000&auto=format&fit=crop">
+            <video autoplay loop muted playsinline webkit-playsinline class="hero-video" poster="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2000&auto=format&fit=crop">
                 <source src="images/hero-video.mp4" type="video/mp4">
             </video>
             <div class="hero-overlay"></div>
@@ -246,13 +246,13 @@
         <a href="mailto:m13999455493@outlook.com" class="btn-primary">发送邮件咨询合作</a>
     </section>
 
-    <script>
+<script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 导航栏缩放
+            // 1. 导航栏缩放
             const navWrapper = document.getElementById('nav-wrapper');
             window.addEventListener('scroll', () => { navWrapper.style.transform = window.scrollY > 50 ? 'scale(0.9)' : 'scale(1)'; });
 
-            // 动画观察器
+            // 2. 动画观察器
             const observerOptions = { root: null, rootMargin: '0px 0px -100px 0px', threshold: 0.1 };
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -266,13 +266,37 @@
             document.querySelectorAll('.blur-reveal, .img-container, .text-mask-container').forEach(el => observer.observe(el));
             setTimeout(() => document.querySelectorAll('.hero .text-mask-content').forEach(el => el.classList.add('visible')), 100);
 
-            // 画廊拖拽 (保留鼠标拖拽，兼容手机端原生触控)
+            // 3. 画廊拖拽
             const track = document.getElementById('carouselTrack');
             let isDown = false; let startX; let scrollLeft;
             track.addEventListener('mousedown', (e) => { isDown = true; track.classList.add('active'); startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; track.style.scrollBehavior = 'auto'; });
             track.addEventListener('mouseleave', () => { isDown = false; track.classList.remove('active'); track.style.scrollBehavior = 'smooth'; });
             track.addEventListener('mouseup', () => { isDown = false; track.classList.remove('active'); track.style.scrollBehavior = 'smooth'; });
             track.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const walk = (e.pageX - track.offsetLeft - startX) * 1.5; track.scrollLeft = scrollLeft - walk; });
+
+            // ==========================================
+            // 4. 🌟 手机端视频强制唤醒黑科技 🌟
+            // ==========================================
+            const heroVideo = document.querySelector('.hero-video');
+            if (heroVideo) {
+                // 尝试强制播放
+                let playPromise = heroVideo.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        // 如果系统拦截了自动播放，我们就监听用户的第一次触摸事件
+                        // 只要用户手指碰到屏幕（准备滑动），立刻强制唤醒视频
+                        document.body.addEventListener('touchstart', function() {
+                            heroVideo.play();
+                        }, { once: true }); // once:true 表示只触发一次，不消耗性能
+                        
+                        // 兼容某些老旧浏览器的点击唤醒
+                        document.body.addEventListener('click', function() {
+                            heroVideo.play();
+                        }, { once: true });
+                    });
+                }
+            }
         });
     </script>
 </body>
