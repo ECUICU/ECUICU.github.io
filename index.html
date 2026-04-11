@@ -7,13 +7,13 @@
     <style>
         /* ========== 基础重置 ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html， body { 
+        html, body { 
             width: 100%; 
             max-width: 100%;
             overflow-x: clip; 
             background-color: #000; 
             color: #f5f5f7; 
-            font-family: -apple-system， BlinkMacSystemFont， "Helvetica Neue"， "PingFang SC"， sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", sans-serif; 
             line-height: 1.5; 
             -webkit-font-smoothing: antialiased; 
         }
@@ -21,157 +21,157 @@
         ::-webkit-scrollbar { display: none; } html { scrollbar-width: none; }
 
         /* ========== 液态玻璃导航栏 ========== */
-        。nav-wrapper { position: fixed; top: 20px; width: 100%; display: flex; justify-content: center; z-index: 999; transition: transform 0.4s ease; }
-        。apple-nav {
-            background: rgba(30， 30， 30， 0.4); backdrop-filter: saturate(200%) blur(30px); -webkit-backdrop-filter: saturate(200%) blur(30px);
-            box-shadow: 0 10px 40px rgba(0， 0， 0， 0.5)， inset 0 1px 1px rgba(255， 255， 255， 0.1);
-            border: 1px solid rgba(255， 255， 255， 0.1); border-radius: 100px; padding: 6px 16px; display: flex; align-items: center;
+        .nav-wrapper { position: fixed; top: 20px; width: 100%; display: flex; justify-content: center; z-index: 999; transition: transform 0.4s ease; }
+        .apple-nav {
+            background: rgba(30, 30, 30, 0.4); backdrop-filter: saturate(200%) blur(30px); -webkit-backdrop-filter: saturate(200%) blur(30px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 100px; padding: 6px 16px; display: flex; align-items: center;
         }
-        。apple-nav ul { list-style: none; display: flex; gap: 5px; }
-        。apple-nav a { display: block; color: #ccc; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; padding: 10px 20px; border-radius: 50px; transition: 0.5s; }
-        。apple-nav a:hover { color: #fff; background: rgba(255， 255， 255， 0.15); }
+        .apple-nav ul { list-style: none; display: flex; gap: 5px; }
+        .apple-nav a { display: block; color: #ccc; font-size: 13px; font-weight: 500; letter-spacing: 0.5px; padding: 10px 20px; border-radius: 50px; transition: 0.5s; }
+        .apple-nav a:hover { color: #fff; background: rgba(255, 255, 255, 0.15); }
 
         /* ========== 柔和的动画系统 ========== */
-        。blur-reveal { opacity: 0; filter: blur(15px); transform: translateY(40px) scale(0.98); transition: opacity 1.6s cubic-bezier(0.2， 0.8， 0.2， 1)， transform 1.6s cubic-bezier(0.2， 0.8， 0.2， 1)， filter 1.6s cubic-bezier(0.2， 0.8， 0.2， 1); }
-        。blur-reveal。visible { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+        .blur-reveal { opacity: 0; filter: blur(15px); transform: translateY(40px) scale(0.98); transition: opacity 1.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .blur-reveal.visible { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
         
-        。text-mask-container { overflow: hidden; display: inline-block; vertical-align: top; white-space: 现在rap; }
-        。text-mask-content { display: inline-block; transform: translateY(100%); transition: transform 1.2s cubic-bezier(0.16， 1， 0.3， 1); }
-        。text-mask-content。visible { transform: translateY(0); }
+        .text-mask-container { overflow: hidden; display: inline-block; vertical-align: top; white-space: nowrap; }
+        .text-mask-content { display: inline-block; transform: translateY(100%); transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .text-mask-content.visible { transform: translateY(0); }
         
-        。img-parallax { width: 100%; height: 100%; object-fit: cover; object-position: center; transform: scale(1.15) translateZ(0); will-change: transform; transition: transform 2s cubic-bezier(0.16， 1， 0.3， 1); }
-        。img-container。visible 。img-parallax { transform: scale(1); }
-        。delay-1 { transition-delay: 0.1s; } 。delay-2 { transition-delay: 0.2s; } 。delay-3 { transition-delay: 0.3s; }
+        .img-parallax { width: 100%; height: 100%; object-fit: cover; object-position: center; transform: scale(1.15) translateZ(0); will-change: transform; transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .img-container.visible .img-parallax { transform: scale(1); }
+        .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; } .delay-3 { transition-delay: 0.3s; }
 
         /* ========== 动态视频主视觉 ========== */
-        。hero { position: relative; height: 100vh; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; background: #000; width: 100%; }
-        。hero-title { font-size: 72px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 20px; z-index: 10; }
-        。hero-title span { background: linear-gradient(180deg, #fff 0%, #aaa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        。hero-subtitle { font-size: 24px; color: #ddd; z-index: 10; font-weight: 400; text-shadow: 0 2px 10px rgba(0，0，0，0.8); }
-        。hero-video-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; }
-        。hero-video { width: 100%; height: 100%; object-fit: cover; display: block; transform: translateZ(0); backface-visibility: hidden; }
-        。hero-overlay { position: absolute; inset: 0; background: linear-gradient(到 top， rgba(0，0，0，1) 0%， rgba(0，0，0，0.2) 40%， rgba(0，0，0，0.5) 100%); }
+        .hero { position: relative; height: 100vh; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; background: #000; width: 100%; }
+        .hero-title { font-size: 72px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 20px; z-index: 10; }
+        .hero-title span { background: linear-gradient(180deg, #fff 0%, #aaa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-subtitle { font-size: 24px; color: #ddd; z-index: 10; font-weight: 400; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        .hero-video-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; }
+        .hero-video { width: 100%; height: 100%; object-fit: cover; display: block; transform: translateZ(0); backface-visibility: hidden; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.5) 100%); }
 
         /* ========== 🌟 黏性滚动展示 (已完全还原你的原版排版) 🌟 ========== */
-        。sticky-section { padding: 150px 5vw; display: flex; gap: 5vw; position: relative; align-items: flex-start; }
-        。sticky-text { flex: 1; position: sticky; top: 30vh; padding-right: 20px; }
-        。sticky-text h2 { font-size: 56px; font-weight: 700; line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.01em; }
-        。sticky-text p { font-size: 21px; color: #86868b; max-width: 400px; }
-        。sticky-gallery { flex: 1.5; display: flex; flex-direction: column; gap: 100px; }
-        。sticky-img-box { width: 100%; border-radius: 24px; overflow: hidden; aspect-ratio: 4/5; box-shadow: 0 30px 60px rgba(0，0，0，0.4); }
+        .sticky-section { padding: 150px 5vw; display: flex; gap: 5vw; position: relative; align-items: flex-start; }
+        .sticky-text { flex: 1; position: sticky; top: 30vh; padding-right: 20px; }
+        .sticky-text h2 { font-size: 56px; font-weight: 700; line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.01em; }
+        .sticky-text p { font-size: 21px; color: #86868b; max-width: 400px; }
+        .sticky-gallery { flex: 1.5; display: flex; flex-direction: column; gap: 100px; }
+        .sticky-img-box { width: 100%; border-radius: 24px; overflow: hidden; aspect-ratio: 4/5; box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
 
         /* ========== 横向画廊 ========== */
-        。carousel-section { width: 100%; padding: 100px 0; background: #0a0a0a; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; user-select: none; }
-        。carousel-header { padding: 0 5vw; margin-bottom: 40px; }
-        。carousel-header h2 { font-size: 32px; font-weight: 600; }
+        .carousel-section { width: 100%; padding: 100px 0; background: #0a0a0a; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; user-select: none; }
+        .carousel-header { padding: 0 5vw; margin-bottom: 40px; }
+        .carousel-header h2 { font-size: 32px; font-weight: 600; }
         
         /* 👉 为画廊增加底部 padding 留出滑动条空间，并开启原生滑动 */
-        。carousel-track { 
+        .carousel-track { 
             display: flex; gap: 30px; padding: 0 5vw 20px 5vw; 
             overflow-x: auto; scroll-behavior: smooth; cursor: grab; 
             -webkit-overflow-scrolling: touch; 
             scrollbar-width: thin; 
-            scrollbar-color: rgba(255， 255， 255， 0.3) transparent;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
         }
-        。carousel-track。active { cursor: grabbing; }
+        .carousel-track.active { cursor: grabbing; }
         
         /* 🌟 定制的高级半透明滑动条 🌟 */
-        。carousel-track::-webkit-scrollbar { display: block; height: 6px; }
-        。carousel-track::-webkit-scrollbar-track { background: rgba(255， 255， 255， 0.05); border-radius: 10px; margin: 0 5vw; }
-        。carousel-track::-webkit-scrollbar-thumb { background: rgba(255， 255， 255， 0.3); border-radius: 10px; }
-        。carousel-track::-webkit-scrollbar-thumb:hover { background: rgba(255， 255， 255， 0.5); }
+        .carousel-track::-webkit-scrollbar { display: block; height: 6px; }
+        .carousel-track::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; margin: 0 5vw; }
+        .carousel-track::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+        .carousel-track::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
 
-        。carousel-item { min-width: 70vw; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; position: relative; pointer-events: none; }
-        。carousel-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(到 top， rgba(0，0，0，0.8)， transparent 40%); opacity: 0.6; transition: 0.5s; }
-        。carousel-item img { width: 100%; height: 100%; object-fit: cover; }
+        .carousel-item { min-width: 70vw; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; position: relative; pointer-events: none; }
+        .carousel-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 40%); opacity: 0.6; transition: 0.5s; }
+        .carousel-item img { width: 100%; height: 100%; object-fit: cover; }
 
         /* ========== Bento Box ========== */
-        。bento-section { width: 100%; padding: 150px 5vw; max-width: 1400px; margin: 0 auto; }
-        。bento-grid { display: grid; grid-template-columns: repeat(2， 1fr); gap: 30px; }
-        。bento-card { background-color: #111; border-radius: 30px; overflow: hidden; position: relative; height: 600px; display: flex; flex-direction: column; justify-content: flex-end; transition: transform 0.6s cubic-bezier(0.16， 1， 0.3， 1)， box-shadow 0.6s ease; border: 1px solid #222; }
-        。bento-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0，0，0，0.8); border-color: #333; }
-        。bento-wide { grid-column: span 2; height: 500px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; }
-        。bento-img-wrap { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
-        。bento-mask { position: absolute; inset: 0; background: linear-gradient(到 top， rgba(17，17，17，0.95) 0%， transparent 60%); z-index: 2; }
-        。bento-wide 。bento-mask { background: linear-gradient(到 right， rgba(17，17，17，0.95) 0%， rgba(17，17，17，0.5) 40%， transparent 100%); }
-        。bento-text { padding: 50px; z-index: 3; position: relative; width: 100%; }
-        。bento-wide 。bento-text { width: 50%; padding-left: 60px; }
-        。bento-title { font-size: 32px; font-weight: 600; margin-bottom: 8px; }
-        。bento-sub { font-size: 18px; color: #aaa; }
+        .bento-section { width: 100%; padding: 150px 5vw; max-width: 1400px; margin: 0 auto; }
+        .bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .bento-card { background-color: #111; border-radius: 30px; overflow: hidden; position: relative; height: 600px; display: flex; flex-direction: column; justify-content: flex-end; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease; border: 1px solid #222; }
+        .bento-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.8); border-color: #333; }
+        .bento-wide { grid-column: span 2; height: 500px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; }
+        .bento-img-wrap { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+        .bento-mask { position: absolute; inset: 0; background: linear-gradient(to top, rgba(17,17,17,0.95) 0%, transparent 60%); z-index: 2; }
+        .bento-wide .bento-mask { background: linear-gradient(to right, rgba(17,17,17,0.95) 0%, rgba(17,17,17,0.5) 40%, transparent 100%); }
+        .bento-text { padding: 50px; z-index: 3; position: relative; width: 100%; }
+        .bento-wide .bento-text { width: 50%; padding-left: 60px; }
+        .bento-title { font-size: 32px; font-weight: 600; margin-bottom: 8px; }
+        .bento-sub { font-size: 18px; color: #aaa; }
 
         /* ========== 品牌宣言 ========== */
-        。manifesto-section { width: 100%; padding: 200px 5vw; display: flex; justify-content: center; text-align: center; background: #050505; }
-        。manifesto-content { max-width: 900px; }
-        。manifesto-quote { font-size: 48px; font-weight: 700; margin-bottom: 60px; line-height: 1.3; background: linear-gradient(180deg, #fff 0%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        。manifesto-desc { font-size: 20px; color: #86868b; line-height: 1.8; margin-bottom: 24px; font-weight: 400; }
-        。manifesto-author { font-size: 14px; letter-spacing: 4px; color: #555; text-transform: uppercase; margin-top: 50px; display: block; }
+        .manifesto-section { width: 100%; padding: 200px 5vw; display: flex; justify-content: center; text-align: center; background: #050505; }
+        .manifesto-content { max-width: 900px; }
+        .manifesto-quote { font-size: 48px; font-weight: 700; margin-bottom: 60px; line-height: 1.3; background: linear-gradient(180deg, #fff 0%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .manifesto-desc { font-size: 20px; color: #86868b; line-height: 1.8; margin-bottom: 24px; font-weight: 400; }
+        .manifesto-author { font-size: 14px; letter-spacing: 4px; color: #555; text-transform: uppercase; margin-top: 50px; display: block; }
 
         /* ========== 底部联系 ========== */
-        。cta-section { width: 100%; padding: 150px 20px 200px; text-align: center; background: #111; color: #f5f5f7; border-top-left-radius: 40px; border-top-right-radius: 40px; margin-top: 0; }
-        。btn-primary { display: inline-block; background-color: #fff; color: #000; padding: 16px 36px; border-radius: 980px; font-size: 17px; font-weight: 500; margin-top: 30px; transition: all 0.4s ease; }
-        。btn-primary:hover { background-color: #ccc; transform: scale(1.05); }
+        .cta-section { width: 100%; padding: 150px 20px 200px; text-align: center; background: #111; color: #f5f5f7; border-top-left-radius: 40px; border-top-right-radius: 40px; margin-top: 0; }
+        .btn-primary { display: inline-block; background-color: #fff; color: #000; padding: 16px 36px; border-radius: 980px; font-size: 17px; font-weight: 500; margin-top: 30px; transition: all 0.4s ease; }
+        .btn-primary:hover { background-color: #ccc; transform: scale(1.05); }
 
         /* ========================================================= */
         /* 移动端专项响应式设计 */
         /* ========================================================= */
         
         @media (max-width: 900px) {
-            。sticky-section { flex-direction: column; gap: 40px; padding: 80px 5vw; }
-            。sticky-text { position: relative; top: 0; }
-            。carousel-item { min-width: 85vw; }
-            。bento-grid { grid-template-columns: 1fr; gap: 20px; }
-            。bento-wide { grid-column: span 1; flex-direction: column; height: 450px; justify-content: flex-end; }
-            。bento-wide 。bento-mask { background: linear-gradient(到 top， rgba(17，17，17，0.95) 0%， transparent 70%); }
-            。bento-wide 。bento-text { width: 100%; padding: 40px; }
-            。manifesto-section { padding: 120px 5vw; }
+            .sticky-section { flex-direction: column; gap: 40px; padding: 80px 5vw; }
+            .sticky-text { position: relative; top: 0; }
+            .carousel-item { min-width: 85vw; }
+            .bento-grid { grid-template-columns: 1fr; gap: 20px; }
+            .bento-wide { grid-column: span 1; flex-direction: column; height: 450px; justify-content: flex-end; }
+            .bento-wide .bento-mask { background: linear-gradient(to top, rgba(17,17,17,0.95) 0%, transparent 70%); }
+            .bento-wide .bento-text { width: 100%; padding: 40px; }
+            .manifesto-section { padding: 120px 5vw; }
         }
 
         @media (max-width: 600px) {
-            。nav-wrapper { top: 15px; }
-            。apple-nav { padding: 4px 10px; }
-            。apple-nav ul { gap: 0px; }
-            。apple-nav a { padding: 8px 12px; font-size: 12px; letter-spacing: 0; }
+            .nav-wrapper { top: 15px; }
+            .apple-nav { padding: 4px 10px; }
+            .apple-nav ul { gap: 0px; }
+            .apple-nav a { padding: 8px 12px; font-size: 12px; letter-spacing: 0; }
             
-            。hero-title { font-size: 36px; margin-bottom: 10px; }
-            。hero-subtitle { font-size: 16px; }
-            。sticky-text h2 { font-size: 36px; }
-            。sticky-text p { font-size: 16px; }
-            。carousel-header h2 { font-size: 26px; }
-            。bento-title { font-size: 24px; margin-bottom: 4px; }
-            。bento-sub { font-size: 15px; }
+            .hero-title { font-size: 36px; margin-bottom: 10px; }
+            .hero-subtitle { font-size: 16px; }
+            .sticky-text h2 { font-size: 36px; }
+            .sticky-text p { font-size: 16px; }
+            .carousel-header h2 { font-size: 26px; }
+            .bento-title { font-size: 24px; margin-bottom: 4px; }
+            .bento-sub { font-size: 15px; }
             
-            。sticky-section { padding: 60px 5vw; }
-            。carousel-section { padding: 60px 0; }
-            。bento-section { padding: 60px 5vw; }
-            。manifesto-section { padding: 80px 5vw; }
+            .sticky-section { padding: 60px 5vw; }
+            .carousel-section { padding: 60px 0; }
+            .bento-section { padding: 60px 5vw; }
+            .manifesto-section { padding: 80px 5vw; }
             
             /* 🌟🌟 完全还原手机端的 3D 空间折叠排版 🌟🌟 */
-            。sticky-gallery { display: block; margin-top: 40px; padding-bottom: 0; }
-            。sticky-img-box { 
+            .sticky-gallery { display: block; margin-top: 40px; padding-bottom: 0; }
+            .sticky-img-box { 
                 position: sticky !important; 
                 top: 15vh; 
                 height: 70vh; 
                 width: 100%; 
                 margin-bottom: 70vh; 
                 border-radius: 20px;
-                border-top: 1px solid rgba(255，255，255，0.15); 
-                box-shadow: 0 -30px 60px rgba(0，0，0，0.95) !important; 
+                border-top: 1px solid rgba(255,255,255,0.15); 
+                box-shadow: 0 -30px 60px rgba(0,0,0,0.95) !important; 
                 transform-origin: top center; 
-                will-change: transform， filter; 
+                will-change: transform, filter; 
                 aspect-ratio: auto; 
             }
-            。sticky-img-box:last-child { margin-bottom: 10vh !important; }
+            .sticky-img-box:last-child { margin-bottom: 10vh !important; }
             
-            。bento-card { height: 400px; border-radius: 20px; }
-            。bento-wide { height: 400px; }
-            。bento-text, .bento-wide 。bento-text { padding: 30px; }
+            .bento-card { height: 400px; border-radius: 20px; }
+            .bento-wide { height: 400px; }
+            .bento-text, .bento-wide .bento-text { padding: 30px; }
             
-            。manifesto-quote { font-size: 28px; margin-bottom: 40px; }
-            。manifesto-desc { font-size: 15px; }
-            。cta-section { padding: 80px 20px 100px; border-top-left-radius: 30px; border-top-right-radius: 30px; }
-            。cta-section h2 { font-size: 32px !important; margin-bottom: 10px !important; }
-            。cta-section p { font-size: 16px !important; margin-bottom: 20px !important; }
-            。btn-primary { font-size: 15px; padding: 12px 28px; }
+            .manifesto-quote { font-size: 28px; margin-bottom: 40px; }
+            .manifesto-desc { font-size: 15px; }
+            .cta-section { padding: 80px 20px 100px; border-top-left-radius: 30px; border-top-right-radius: 30px; }
+            .cta-section h2 { font-size: 32px !important; margin-bottom: 10px !important; }
+            .cta-section p { font-size: 16px !important; margin-bottom: 20px !important; }
+            .btn-primary { font-size: 15px; padding: 12px 28px; }
         }
     </style>
 </head>
@@ -277,14 +277,14 @@
     </section>
 
     <script>
-        document。addEventListener("DOMContentLoaded"， function() {
+        document.addEventListener("DOMContentLoaded", function() {
             // 1. 导航栏缩放
-            const navWrapper = document。getElementById('nav-wrapper');
-            window。addEventListener('scroll'， () => { navWrapper。style。transform = window。scrollY > 50 ? 'scale(0.9)' : 'scale(1)'; });
+            const navWrapper = document.getElementById('nav-wrapper');
+            window.addEventListener('scroll', () => { navWrapper.style.transform = window.scrollY > 50 ? 'scale(0.9)' : 'scale(1)'; });
 
             // 2. 动画观察器
-            const observerOptions = { root: null， rootMargin: '0px 0px -100px 0px'， threshold: 0.1 };
-            const observer = new IntersectionObserver((entries， observer) => {
+            const observerOptions = { root: null, rootMargin: '0px 0px -100px 0px', threshold: 0.1 };
+            const observer = new IntersectionObserver((entries, observer) => {
                 entries。forEach(entry => {
                     if (entry。isIntersecting) {
                         if(entry。target。classList。contains('blur-reveal') || entry。target。classList。contains('img-container')) { entry。target。classList。add('visible'); }
