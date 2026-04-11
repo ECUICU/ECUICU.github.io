@@ -12,7 +12,6 @@
             background-color: #000; color: #f5f5f7; line-height: 1.5; overflow-x: hidden; -webkit-font-smoothing: antialiased; 
         }
         a { text-decoration: none; cursor: pointer; }
-        /* 隐藏滚动条但保留滚动功能 */
         ::-webkit-scrollbar { display: none; } html { scrollbar-width: none; }
 
         /* ========== 液态玻璃导航栏 ========== */
@@ -27,10 +26,7 @@
         .apple-nav a:hover { color: #fff; background: rgba(255, 255, 255, 0.15); }
 
         /* ========== 柔和的动画系统 ========== */
-        .blur-reveal {
-            opacity: 0; filter: blur(15px); transform: translateY(40px) scale(0.98);
-            transition: opacity 1.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
+        .blur-reveal { opacity: 0; filter: blur(15px); transform: translateY(40px) scale(0.98); transition: opacity 1.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.6s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .blur-reveal.visible { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
         .text-mask-container { overflow: hidden; display: inline-block; vertical-align: top; }
         .text-mask-content { display: inline-block; transform: translateY(100%); transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -39,18 +35,15 @@
         .img-container.visible .img-parallax { transform: scale(1); }
         .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; } .delay-3 { transition-delay: 0.3s; }
 
-        /* ========== Hero 主视觉 ========== */
-        .hero { position: relative; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        /* ========== 动态视频主视觉 ========== */
+        /* 引入 100dvh 完美适配手机浏览器地址栏收缩 */
+        .hero { position: relative; height: 100vh; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; background: #000; }
         .hero-title { font-size: 72px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 20px; z-index: 10; }
-        .hero-title span { background: linear-gradient(180deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-subtitle { font-size: 24px; color: #86868b; z-index: 10; font-weight: 400; }
-        .hero-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
-            background: url('https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2000&auto=format&fit=crop') no-repeat center center/cover;
-            mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 50%); -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 50%);
-            animation: breathe 25s infinite alternate ease-in-out;
-        }
-        @keyframes breathe { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+        .hero-title span { background: linear-gradient(180deg, #fff 0%, #aaa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-subtitle { font-size: 24px; color: #ddd; z-index: 10; font-weight: 400; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        .hero-video-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; }
+        .hero-video { width: 100%; height: 100%; object-fit: cover; display: block; transform: translateZ(0); backface-visibility: hidden; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.5) 100%); }
 
         /* ========== 黏性滚动展示 ========== */
         .sticky-section { padding: 150px 5vw; display: flex; gap: 5vw; position: relative; align-items: flex-start; }
@@ -64,7 +57,8 @@
         .carousel-section { padding: 100px 0; background: #0a0a0a; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; user-select: none; }
         .carousel-header { padding: 0 5vw; margin-bottom: 40px; }
         .carousel-header h2 { font-size: 32px; font-weight: 600; }
-        .carousel-track { display: flex; gap: 30px; padding: 0 5vw; overflow-x: auto; scroll-behavior: smooth; cursor: grab; }
+        /* 增加 touch-action 增强移动端滑动体验 */
+        .carousel-track { display: flex; gap: 30px; padding: 0 5vw; overflow-x: auto; scroll-behavior: smooth; cursor: grab; -webkit-overflow-scrolling: touch; touch-action: pan-x; }
         .carousel-track.active { cursor: grabbing; }
         .carousel-item { min-width: 70vw; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; position: relative; pointer-events: none; }
         .carousel-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 40%); opacity: 0.6; transition: 0.5s; }
@@ -73,67 +67,81 @@
         /* ========== Bento Box ========== */
         .bento-section { padding: 150px 5vw; max-width: 1400px; margin: 0 auto; }
         .bento-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .bento-card {
-            background-color: #111; border-radius: 30px; overflow: hidden; position: relative; height: 600px;
-            display: flex; flex-direction: column; justify-content: flex-end;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease; border: 1px solid #222;
-        }
+        .bento-card { background-color: #111; border-radius: 30px; overflow: hidden; position: relative; height: 600px; display: flex; flex-direction: column; justify-content: flex-end; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease; border: 1px solid #222; }
         .bento-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.8); border-color: #333; }
-        
         .bento-wide { grid-column: span 2; height: 500px; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; }
         .bento-img-wrap { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
         .bento-mask { position: absolute; inset: 0; background: linear-gradient(to top, rgba(17,17,17,0.95) 0%, transparent 60%); z-index: 2; }
         .bento-wide .bento-mask { background: linear-gradient(to right, rgba(17,17,17,0.95) 0%, rgba(17,17,17,0.5) 40%, transparent 100%); }
-        
         .bento-text { padding: 50px; z-index: 3; position: relative; width: 100%; }
         .bento-wide .bento-text { width: 50%; padding-left: 60px; }
         .bento-title { font-size: 32px; font-weight: 600; margin-bottom: 8px; }
         .bento-sub { font-size: 18px; color: #aaa; }
 
-        .cta-section { padding: 150px 20px 200px; text-align: center; background: #fff; color: #000; border-top-left-radius: 40px; border-top-right-radius: 40px; margin-top: 50px; }
-        .btn-primary { display: inline-block; background-color: #1d1d1f; color: #fff; padding: 16px 36px; border-radius: 980px; font-size: 17px; font-weight: 500; margin-top: 30px; transition: all 0.4s ease; }
-        .btn-primary:hover { background-color: #000; transform: scale(1.05); }
+        /* ========== 品牌宣言 ========== */
+        .manifesto-section { padding: 200px 5vw; display: flex; justify-content: center; text-align: center; background: #050505; }
+        .manifesto-content { max-width: 900px; }
+        .manifesto-quote { font-size: 48px; font-weight: 700; margin-bottom: 60px; line-height: 1.3; background: linear-gradient(180deg, #fff 0%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .manifesto-desc { font-size: 20px; color: #86868b; line-height: 1.8; margin-bottom: 24px; font-weight: 400; }
+        .manifesto-author { font-size: 14px; letter-spacing: 4px; color: #555; text-transform: uppercase; margin-top: 50px; display: block; }
 
-        /* ========================================= */
-        /* 🌟 独立的图片仓库面板 Modal */
-        /* ========================================= */
-        .repository-modal {
-            position: fixed; inset: 0; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            z-index: 10000; display: flex; flex-direction: column; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
-        }
-        .repository-modal.active { opacity: 1; pointer-events: auto; }
-        .repo-header { width: 100%; padding: 40px 5vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .repo-title { font-size: 28px; font-weight: 600; }
-        .close-repo { font-size: 36px; cursor: pointer; color: #888; transition: 0.3s; }
-        .close-repo:hover { color: #fff; transform: rotate(90deg); }
-        .repo-toolbar { width: 100%; padding: 20px 5vw; display: flex; justify-content: flex-end; }
-        .upload-btn { background: #fff; color: #000; padding: 10px 24px; border-radius: 50px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
-        .upload-btn:hover { background: #ccc; }
-        #file-input { display: none; }
+        /* ========== 底部联系 ========== */
+        .cta-section { padding: 150px 20px 200px; text-align: center; background: #111; color: #f5f5f7; border-top-left-radius: 40px; border-top-right-radius: 40px; margin-top: 0; }
+        .btn-primary { display: inline-block; background-color: #fff; color: #000; padding: 16px 36px; border-radius: 980px; font-size: 17px; font-weight: 500; margin-top: 30px; transition: all 0.4s ease; }
+        .btn-primary:hover { background-color: #ccc; transform: scale(1.05); }
 
-        .repo-grid { width: 100%; max-width: 1600px; padding: 0 5vw 100px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .repo-card { background: #1a1a1a; border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 1; display: flex; flex-direction: column; }
-        .repo-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .repo-card:hover img { transform: scale(1.05); filter: brightness(0.8); }
-        .like-overlay { position: absolute; bottom: 0; width: 100%; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); display: flex; justify-content: space-between; align-items: center; z-index: 2; }
-        .like-btn { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 8px 16px; border-radius: 50px; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); }
-        .like-btn:hover { background: rgba(255,255,255,0.2); }
-        .like-icon { font-size: 18px; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: #fff; }
-        .like-btn.liked { background: rgba(255, 59, 48, 0.15); border-color: rgba(255, 59, 48, 0.3); }
-        .like-btn.liked .like-icon { color: #ff3b30; transform: scale(1.2); }
-        .like-count { font-size: 14px; font-weight: 500; }
-
-        /* ========== 响应式 ========== */
+        /* ========================================================= */
+        /* 🌟 核心升级：移动端专项响应式设计 (Mobile-First Optimization) */
+        /* ========================================================= */
+        
+        /* 平板端 (iPad 等) */
         @media (max-width: 900px) {
-            .sticky-section { flex-direction: column; gap: 50px; padding: 100px 5vw; }
+            .sticky-section { flex-direction: column; gap: 40px; padding: 80px 5vw; }
             .sticky-text { position: relative; top: 0; }
-            .carousel-item { min-width: 90vw; }
-            .bento-grid { grid-template-columns: 1fr; }
-            .bento-wide { grid-column: span 1; flex-direction: column; height: 500px; justify-content: flex-end; }
+            .sticky-gallery { gap: 40px; }
+            .carousel-item { min-width: 85vw; }
+            .bento-grid { grid-template-columns: 1fr; gap: 20px; }
+            .bento-wide { grid-column: span 1; flex-direction: column; height: 450px; justify-content: flex-end; }
             .bento-wide .bento-mask { background: linear-gradient(to top, rgba(17,17,17,0.95) 0%, transparent 70%); }
             .bento-wide .bento-text { width: 100%; padding: 40px; }
-            .hero-title { font-size: 48px; }
+            .manifesto-section { padding: 120px 5vw; }
+        }
+
+        /* 手机端 (iPhone、安卓等竖屏) */
+        @media (max-width: 600px) {
+            /* 导航缩紧，防止换行 */
+            .nav-wrapper { top: 15px; }
+            .apple-nav { padding: 4px 10px; }
+            .apple-nav ul { gap: 0px; }
+            .apple-nav a { padding: 8px 12px; font-size: 12px; letter-spacing: 0; }
+            
+            /* 字体全面重塑，适配窄屏 */
+            .hero-title { font-size: 36px; margin-bottom: 10px; }
+            .hero-subtitle { font-size: 16px; }
+            .sticky-text h2 { font-size: 36px; }
+            .sticky-text p { font-size: 16px; }
+            .carousel-header h2 { font-size: 26px; }
+            .bento-title { font-size: 24px; margin-bottom: 4px; }
+            .bento-sub { font-size: 15px; }
+            
+            /* 缩小所有多余留白 */
+            .sticky-section { padding: 60px 5vw; }
+            .carousel-section { padding: 60px 0; }
+            .bento-section { padding: 60px 5vw; }
+            .manifesto-section { padding: 80px 5vw; }
+            
+            /* 卡片高度优化 */
+            .bento-card { height: 400px; border-radius: 20px; }
+            .bento-wide { height: 400px; }
+            .bento-text, .bento-wide .bento-text { padding: 30px; }
+            
+            /* 底部联系紧凑化 */
+            .manifesto-quote { font-size: 28px; margin-bottom: 40px; }
+            .manifesto-desc { font-size: 15px; }
+            .cta-section { padding: 80px 20px 100px; border-top-left-radius: 30px; border-top-right-radius: 30px; }
+            .cta-section h2 { font-size: 32px !important; margin-bottom: 10px !important; }
+            .cta-section p { font-size: 16px !important; margin-bottom: 20px !important; }
+            .btn-primary { font-size: 15px; padding: 12px 28px; }
         }
     </style>
 </head>
@@ -146,12 +154,19 @@
                 <li><a href="#sticky">展示</a></li>
                 <li><a href="#carousel">画廊</a></li>
                 <li><a href="#bento">领域</a></li>
-                <li><a id="open-repo-nav">图库</a></li> </ul>
+                <li><a href="#about">理念</a></li>
+            </ul>
         </nav>
     </div>
 
     <section class="hero">
-        <div class="hero-bg"></div>
+        <div class="hero-video-wrapper">
+            <video autoplay loop muted playsinline webkit-playsinline class="hero-video" poster="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2000&auto=format&fit=crop">
+                <source src="images/hero-video.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+        </div>
+        
         <h1 class="hero-title">
             <div class="text-mask-container"><div class="text-mask-content delay-1"><span>俯瞰苍茫天地。</span></div></div><br>
             <div class="text-mask-container"><div class="text-mask-content delay-2"><span>定格人间烟火。</span></div></div>
@@ -177,20 +192,20 @@
     <section id="carousel" class="carousel-section">
         <div class="carousel-header blur-reveal">
             <h2>宽画幅，电影级沉浸。</h2>
-            <p style="color:#888;">电脑端按住鼠标拖拽滑动 / 手机端手指横划</p>
+            <p style="color:#888;">左右滑动查看纯净构图</p>
         </div>
         <div class="carousel-track" id="carouselTrack">
-            <div class="carousel-item"><img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1600&auto=format&fit=crop" alt="轮播1"></div>
-            <div class="carousel-item"><img src="https://images.unsplash.com/photo-1516802273409-68526ee1bdd6?q=80&w=1600&auto=format&fit=crop" alt="轮播2"></div>
-            <div class="carousel-item"><img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=1600&auto=format&fit=crop" alt="轮播3"></div>
-            <div class="carousel-item"><img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1600&auto=format&fit=crop" alt="轮播4"></div>
+            <div class="carousel-item"><img src="images/7c852cae9787a8b70e50eac67eabc25e.jpg" alt="轮播1"></div>
+            <div class="carousel-item"><img src="images/b7ab4be49db9cf801cc995dafe4bc025.jpg" alt="轮播2"></div>
+            <div class="carousel-item"><img src="images/44363d7aa1334e40d7a337ce3df822ec.jpg" alt="轮播3"></div>
+            <div class="carousel-item"><img src="images/e01ae10c7dc1104b5148ef544f17412f.jpg" alt="轮播4"></div>
         </div>
     </section>
 
     <section id="bento" class="bento-section">
         <div class="bento-grid">
             <div class="bento-card bento-wide blur-reveal">
-                <div class="bento-img-wrap img-container"><img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1200&auto=format&fit=crop" class="img-parallax" alt="商业"></div>
+                <div class="bento-img-wrap img-container"><img src="images/34a71314cfa1d65b7ccaffabcb0ee75e.jpg" class="img-parallax" alt="商业"></div>
                 <div class="bento-mask"></div>
                 <div class="bento-text">
                     <h3 class="bento-title">商业宣传片定制</h3>
@@ -216,66 +231,34 @@
         </div>
     </section>
 
+    <section id="about" class="manifesto-section">
+        <div class="manifesto-content">
+            <h2 class="manifesto-quote blur-reveal">"用镜头丈量天地，<br>以光影记录人间。"</h2>
+            <p class="manifesto-desc blur-reveal delay-1">你好，我是 zKUN，扎根于美丽的新疆阿勒泰。无论是操纵无人机以上帝视角俯瞰壮丽雪山，还是穿梭于市井记录充满烟火气的人文瞬间，我都致力于将这份热爱与敬畏注入每一帧画面。</p>
+            <p class="manifesto-desc blur-reveal delay-2">我相信，最震撼的视觉并非源于昂贵的器材，而是源于对脚下这片土地的深情，以及对生活本质的共鸣。期待用我的镜头，讲述你的故事。</p>
+            <span class="manifesto-author blur-reveal delay-3">— zKUN VISUALS</span>
+        </div>
+    </section>
+
     <section class="cta-section">
-        <h2 style="font-size: 48px; font-weight: 700;">开启你的视觉重塑。</h2>
-        <p style="font-size: 20px; color: #666; margin-top: 10px; margin-bottom: 20px;">商业拍摄 / 航拍项目 / 高端纪实</p>
+        <h2 style="font-size: 48px; font-weight: 700; margin-bottom: 20px;">开启你的视觉重塑。</h2>
+        <p style="font-size: 20px; margin-bottom: 40px; opacity: 0.8;">商业拍摄 / 航拍项目 / 高端纪实</p>
         <a href="mailto:m13999455493@outlook.com" class="btn-primary">发送邮件咨询合作</a>
     </section>
 
-    <div class="repository-modal" id="repository">
-        <div class="repo-header">
-            <div class="repo-title">公共图片社区</div>
-            <div class="close-repo" id="close-repo-btn">&times;</div>
-        </div>
-        <div class="repo-toolbar">
-            <label class="upload-btn">
-                <span>➕ 上传照片分享</span>
-                <input type="file" id="file-input" accept="image/*">
-            </label>
-        </div>
-        <div class="repo-grid" id="repo-grid">
-            <div class="repo-card">
-                <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=800" alt="库图片1">
-                <div class="like-overlay">
-                    <span style="font-size: 12px; color: #ccc;">网友分享: 阿勒泰之冬</span>
-                    <div class="like-btn" onclick="toggleLike(this)">
-                        <span class="like-icon">🤍</span>
-                        <span class="like-count">128</span>
-                    </div>
-                </div>
-            </div>
-            <div class="repo-card">
-                <img src="https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?q=80&w=800" alt="库图片2">
-                <div class="like-overlay">
-                    <span style="font-size: 12px; color: #ccc;">网友分享: 纪实</span>
-                    <div class="like-btn" onclick="toggleLike(this)">
-                        <span class="like-icon">🤍</span>
-                        <span class="like-count">85</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. 导航栏缩放
+            // 导航栏缩放
             const navWrapper = document.getElementById('nav-wrapper');
-            window.addEventListener('scroll', () => {
-                navWrapper.style.transform = window.scrollY > 50 ? 'scale(0.9)' : 'scale(1)';
-            });
+            window.addEventListener('scroll', () => { navWrapper.style.transform = window.scrollY > 50 ? 'scale(0.9)' : 'scale(1)'; });
 
-            // 2. 核心动画观察器 (主页显影特效)
+            // 动画观察器
             const observerOptions = { root: null, rootMargin: '0px 0px -100px 0px', threshold: 0.1 };
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        if(entry.target.classList.contains('blur-reveal') || entry.target.classList.contains('img-container')) {
-                            entry.target.classList.add('visible');
-                        }
-                        if(entry.target.classList.contains('text-mask-container')) {
-                            entry.target.querySelector('.text-mask-content').classList.add('visible');
-                        }
+                        if(entry.target.classList.contains('blur-reveal') || entry.target.classList.contains('img-container')) { entry.target.classList.add('visible'); }
+                        if(entry.target.classList.contains('text-mask-container')) { entry.target.querySelector('.text-mask-content').classList.add('visible'); }
                         observer.unobserve(entry.target); 
                     }
                 });
@@ -283,79 +266,14 @@
             document.querySelectorAll('.blur-reveal, .img-container, .text-mask-container').forEach(el => observer.observe(el));
             setTimeout(() => document.querySelectorAll('.hero .text-mask-content').forEach(el => el.classList.add('visible')), 100);
 
-            // 3. 画廊拖拽功能 (Drag to scroll)
+            // 画廊拖拽 (保留鼠标拖拽，兼容手机端原生触控)
             const track = document.getElementById('carouselTrack');
             let isDown = false; let startX; let scrollLeft;
-            track.addEventListener('mousedown', (e) => {
-                isDown = true; track.classList.add('active'); startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; track.style.scrollBehavior = 'auto'; 
-            });
+            track.addEventListener('mousedown', (e) => { isDown = true; track.classList.add('active'); startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; track.style.scrollBehavior = 'auto'; });
             track.addEventListener('mouseleave', () => { isDown = false; track.classList.remove('active'); track.style.scrollBehavior = 'smooth'; });
             track.addEventListener('mouseup', () => { isDown = false; track.classList.remove('active'); track.style.scrollBehavior = 'smooth'; });
-            track.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - track.offsetLeft;
-                const walk = (x - startX) * 1.5;
-                track.scrollLeft = scrollLeft - walk;
-            });
-
-            // 4. 图片仓库 Modal 打开/关闭逻辑 (改为从顶部导航栏触发)
-            const openRepoBtn = document.getElementById('open-repo-nav'); // ID 已更改
-            const closeRepoBtn = document.getElementById('close-repo-btn');
-            const repositoryModal = document.getElementById('repository');
-
-            openRepoBtn.addEventListener('click', (e) => {
-                e.preventDefault(); // 阻止默认的 a 标签跳转
-                repositoryModal.classList.add('active');
-                document.body.style.overflow = 'hidden'; 
-            });
-
-            closeRepoBtn.addEventListener('click', () => {
-                repositoryModal.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            });
-
-            // 5. 本地图片上传渲染
-            const fileInput = document.getElementById('file-input');
-            const repoGrid = document.getElementById('repo-grid');
-            fileInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const imageUrl = URL.createObjectURL(file);
-                    const newCard = document.createElement('div');
-                    newCard.className = 'repo-card';
-                    newCard.innerHTML = `
-                        <img src="${imageUrl}" alt="用户上传">
-                        <div class="like-overlay">
-                            <span style="font-size: 12px; color: #ccc;">刚刚上传</span>
-                            <div class="like-btn" onclick="toggleLike(this)">
-                                <span class="like-icon">🤍</span>
-                                <span class="like-count">0</span>
-                            </div>
-                        </div>
-                    `;
-                    repoGrid.prepend(newCard);
-                    fileInput.value = ''; // 清空以允许重复上传
-                }
-            });
+            track.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const walk = (e.pageX - track.offsetLeft - startX) * 1.5; track.scrollLeft = scrollLeft - walk; });
         });
-
-        // 6. 点赞状态切换逻辑 (全局挂载)
-        window.toggleLike = function(btn) {
-            const icon = btn.querySelector('.like-icon');
-            const countSpan = btn.querySelector('.like-count');
-            let currentCount = parseInt(countSpan.innerText);
-
-            if (btn.classList.contains('liked')) {
-                btn.classList.remove('liked');
-                icon.innerText = '🤍';
-                countSpan.innerText = currentCount - 1;
-            } else {
-                btn.classList.add('liked');
-                icon.innerText = '❤️';
-                countSpan.innerText = currentCount + 1;
-            }
-        };
     </script>
 </body>
-</html> 
+</html>
