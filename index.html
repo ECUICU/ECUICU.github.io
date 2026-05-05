@@ -43,21 +43,22 @@
         .img-container.visible .img-parallax { transform: scale(1); }
         .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; } .delay-3 { transition-delay: 0.3s; }
 
-        /* ========== 动态视频主视觉 ========== */
+        /* ========== 静态图片主视觉 ========== */
         .hero { position: relative; height: 100vh; height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; background: #000; width: 100%; }
         .hero-title { font-size: 72px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 20px; z-index: 10; }
         .hero-title span { background: linear-gradient(180deg, #fff 0%, #aaa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-subtitle { font-size: 24px; color: #ddd; z-index: 10; font-weight: 400; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
-        .hero-video-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; }
-        .hero-video { width: 100%; height: 100%; object-fit: cover; display: block; transform: translateZ(0); backface-visibility: hidden; }
+        .hero-bg-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; }
+        .hero-bg { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transform: translateZ(0); backface-visibility: hidden; }
         .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.5) 100%); }
 
-        /* ========== 🌟 黏性滚动展示 (已完全还原你的原版排版) 🌟 ========== */
-        .sticky-section { padding: 150px 5vw; display: flex; gap: 5vw; position: relative; align-items: flex-start; }
+        /* ========== 黏性滚动展示 (电脑端经典排版) ========== */
+        .sticky-section { padding: 150px 5vw; display: flex; gap: 5vw; position: relative; align-items: flex-start; width: 100%; }
         .sticky-text { flex: 1; position: sticky; top: 30vh; padding-right: 20px; }
         .sticky-text h2 { font-size: 56px; font-weight: 700; line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.01em; }
         .sticky-text p { font-size: 21px; color: #86868b; max-width: 400px; }
-        .sticky-gallery { flex: 1.5; display: flex; flex-direction: column; gap: 100px; }
+        
+        .sticky-gallery { flex: 1.5; display: flex; flex-direction: column; gap: 100px; width: 100%; }
         .sticky-img-box { width: 100%; border-radius: 24px; overflow: hidden; aspect-ratio: 4/5; box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
 
         /* ========== 横向画廊 ========== */
@@ -65,7 +66,6 @@
         .carousel-header { padding: 0 5vw; margin-bottom: 40px; }
         .carousel-header h2 { font-size: 32px; font-weight: 600; }
         
-        /* 👉 为画廊增加底部 padding 留出滑动条空间，并开启原生滑动 */
         .carousel-track { 
             display: flex; gap: 30px; padding: 0 5vw 20px 5vw; 
             overflow-x: auto; scroll-behavior: smooth; cursor: grab; 
@@ -74,8 +74,6 @@
             scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
         }
         .carousel-track.active { cursor: grabbing; }
-        
-        /* 🌟 定制的高级半透明滑动条 🌟 */
         .carousel-track::-webkit-scrollbar { display: block; height: 6px; }
         .carousel-track::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; margin: 0 5vw; }
         .carousel-track::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
@@ -98,6 +96,36 @@
         .bento-wide .bento-text { width: 50%; padding-left: 60px; }
         .bento-title { font-size: 32px; font-weight: 600; margin-bottom: 8px; }
         .bento-sub { font-size: 18px; color: #aaa; }
+        
+        /* 🌟 高级定制：卡片内置链接按钮 🌟 */
+        .bento-action-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+        }
+        .bento-action-btn svg {
+            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        .bento-action-btn:hover {
+            background: #fff;
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
 
         /* ========== 品牌宣言 ========== */
         .manifesto-section { width: 100%; padding: 200px 5vw; display: flex; justify-content: center; text-align: center; background: #050505; }
@@ -145,26 +173,32 @@
             .bento-section { padding: 60px 5vw; }
             .manifesto-section { padding: 80px 5vw; }
             
-            /* 🌟🌟 完全还原手机端的 3D 空间折叠排版 🌟🌟 */
-            .sticky-gallery { display: block; margin-top: 40px; padding-bottom: 0; }
-            .sticky-img-box { 
-                position: sticky !important; 
-                top: 15vh; 
-                height: 70vh; 
-                width: 100%; 
-                margin-bottom: 70vh; 
-                border-radius: 20px;
-                border-top: 1px solid rgba(255,255,255,0.15); 
-                box-shadow: 0 -30px 60px rgba(0,0,0,0.95) !important; 
-                transform-origin: top center; 
-                will-change: transform, filter; 
-                aspect-ratio: auto; 
+            /* 🌟🌟 手机端最干净原生的垂直排版，抛弃复杂堆叠，极致流畅 🌟🌟 */
+            .sticky-gallery { 
+                display: flex; 
+                flex-direction: column; 
+                gap: 30px; 
+                margin-top: 40px; 
+                padding-bottom: 0; 
             }
-            .sticky-img-box:last-child { margin-bottom: 10vh !important; }
+            .sticky-img-box { 
+                position: relative !important; 
+                top: auto !important; 
+                height: auto; 
+                width: 100%; 
+                margin-bottom: 0 !important; 
+                border-radius: 20px;
+                box-shadow: 0 15px 40px rgba(0,0,0,0.4) !important; 
+                transform: none !important; 
+                filter: none !important; 
+                aspect-ratio: 4/5; 
+                border-top: none;
+            }
             
             .bento-card { height: 400px; border-radius: 20px; }
             .bento-wide { height: 400px; }
             .bento-text, .bento-wide .bento-text { padding: 30px; }
+            .bento-action-btn { margin-top: 16px; padding: 8px 20px; font-size: 14px; }
             
             .manifesto-quote { font-size: 28px; margin-bottom: 40px; }
             .manifesto-desc { font-size: 15px; }
@@ -189,11 +223,10 @@
         </nav>
     </div>
 
+    <!-- 首屏使用高质量静态图片替代视频 -->
     <section class="hero">
-        <div class="hero-video-wrapper">
-            <video autoplay loop muted playsinline webkit-playsinline preload="auto" class="hero-video" poster="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2000&auto=format&fit=crop">
-                <source src="images/hero-video.mp4" type="video/mp4">
-            </video>
+        <div class="hero-bg-wrapper">
+            <img src="images/44363d7aa1334e40d7a337ce3df822ec.jpg" class="hero-bg" alt="首屏背景">
             <div class="hero-overlay"></div>
         </div>
         
@@ -204,6 +237,7 @@
         <p class="hero-subtitle blur-reveal delay-3">每一次快门，都是一件艺术品。</p>
     </section>
 
+    <!-- 黏性滚动展示区 -->
     <section id="sticky" class="sticky-section">
         <div class="sticky-text">
             <h2>
@@ -212,10 +246,11 @@
             </h2>
             <p class="blur-reveal delay-2">从高空俯瞰阿勒泰的脉络，到走入人群记录真实的温度。这不是图库，这是经过时间雕琢的视觉资产。</p>
         </div>
+        <!-- 3张图片 -->
         <div class="sticky-gallery">
             <div class="sticky-img-box img-container blur-reveal"><img src="images/7c852cae9787a8b70e50eac67eabc25e.jpg" class="img-parallax" alt="展示1"></div>
             <div class="sticky-img-box img-container blur-reveal"><img src="images/b7ab4be49db9cf801cc995dafe4bc025.jpg" class="img-parallax" alt="展示2"></div>
-            <div class="sticky-img-box img-container blur-reveal"><img src="images/44363d7aa1334e40d7a337ce3df822ec.jpg" class="img-parallax" alt="展示3"></div>
+            <div class="sticky-img-box img-container blur-reveal"><img src="images/34a71314cfa1d65b7ccaffabcb0ee75e.jpg" class="img-parallax" alt="展示3"></div>
         </div>
     </section>
 
@@ -235,11 +270,15 @@
     <section id="bento" class="bento-section">
         <div class="bento-grid">
             <div class="bento-card bento-wide blur-reveal">
-                <div class="bento-img-wrap img-container"><img src="images/34a71314cfa1d65b7ccaffabcb0ee75e.jpg" class="img-parallax" alt="商业"></div>
+                <div class="bento-img-wrap img-container"><img src="images/Gemini_Generated_Image_xob5l0xob5l0xob5.png" class="img-parallax" alt="商业"></div>
                 <div class="bento-mask"></div>
                 <div class="bento-text">
                     <h3 class="bento-title">商业宣传片定制</h3>
                     <p class="bento-sub">从脚本到调色，打造 Apple 级的视听盛宴，赋予品牌灵魂。</p>
+                    <!-- 👉 新增的视频跳转按钮 -->
+                    <a href="https://v9-default.365yg.com/87fb1f6c17daa4cc00ca1bd6feea3075/69f9e6f8/video/tos/cn/tos-cn-v-0015c005/oYWzV5AHEEoOO5AAzNpAXDXBlEiGD6AfgAfFC9/?a=0&ch=0&cr=0&dr=0&lr=unwatermarked&net=5&cd=0%7C0%7C0%7C0&cv=1&br=10050&bt=10050&ds=4&ft=aT_7TQQqUuIf_oZmo0OW_QYaUqiXv0X8kVJEzIuvUvPD-Ipz&mime_type=video_mp4&qs=13&rc=ajt1a3Y5cnZtOTMzNGkzM0Bpajt1a3Y5cnZtOTMzNGkzM0AwaWVzMmRzXl9hLS1kLTBzYSMwaWVzMmRzXl9hLS1kLTBzcw%3D%3D&btag=40000e00028000&cquery=106H&dy_q=1777981546&l=20260505194546A572B24FE461399AA500" target="_blank" class="bento-action-btn">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> 观看正片
+                    </a>
                 </div>
             </div>
             <div class="bento-card blur-reveal">
@@ -251,7 +290,7 @@
                 </div>
             </div>
             <div class="bento-card blur-reveal delay-1">
-                <div class="bento-img-wrap img-container"><img src="https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?q=80&w=800&auto=format&fit=crop" class="img-parallax" alt="人文"></div>
+                <div class="bento-img-wrap img-container"><img src="images/Gemini_Generated_Image_ijhy8iijhy8iijhy.png" alt="人文"></div>
                 <div class="bento-mask"></div>
                 <div class="bento-text">
                     <h3 class="bento-title">人文纪实</h3>
@@ -303,75 +342,6 @@
             track.addEventListener('mouseleave', () => { isDown = false; track.classList.remove('active'); track.style.scrollBehavior = 'smooth'; });
             track.addEventListener('mouseup', () => { isDown = false; track.classList.remove('active'); track.style.scrollBehavior = 'smooth'; });
             track.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const walk = (e.pageX - track.offsetLeft - startX) * 1.5; track.scrollLeft = scrollLeft - walk; });
-
-            // 4. 视频强制唤醒黑科技
-            const heroVideo = document.querySelector('.hero-video');
-            if (heroVideo) {
-                let playPromise = heroVideo.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        document.body.addEventListener('touchstart', function() {
-                            heroVideo.play();
-                        }, { once: true });
-                        document.body.addEventListener('click', function() {
-                            heroVideo.play();
-                        }, { once: true });
-                    });
-                }
-            }
-
-            // 5. 🌟🌟 完全还原你上传版里的手机端空间折叠逻辑 🌟🌟
-            function initSpatialFold() {
-                const cards = document.querySelectorAll('.sticky-img-box');
-                
-                window.addEventListener('scroll', () => {
-                    // 电脑端保持经典滑动
-                    if (window.innerWidth > 600) {
-                        cards.forEach(card => {
-                            card.style.transform = '';
-                            card.style.filter = '';
-                        });
-                        return;
-                    }
-
-                    // 手机端空间折叠
-                    const stickTop = window.innerHeight * 0.15; 
-                    
-                    cards.forEach((card, index) => {
-                        const rect = card.getBoundingClientRect();
-                        
-                        if (rect.top <= stickTop + 5) {
-                            if (index < cards.length - 1) {
-                                const nextCard = cards[index + 1].getBoundingClientRect();
-                                const dist = nextCard.top - rect.top;
-                                const maxDist = window.innerHeight * 0.7; 
-                                
-                                if (dist < maxDist && dist > 0) {
-                                    let progress = 1 - (dist / maxDist);
-                                    let scale = 1 - (0.08 * progress); 
-                                    let brightness = 1 - (0.5 * progress); 
-                                    
-                                    card.style.transform = `scale(${scale})`;
-                                    card.style.filter = `brightness(${brightness})`;
-                                } else if (dist <= 0) {
-                                    card.style.transform = `scale(0.92)`;
-                                    card.style.filter = `brightness(0.5)`;
-                                } else {
-                                    card.style.transform = `scale(1)`;
-                                    card.style.filter = `brightness(1)`;
-                                }
-                            }
-                        } else {
-                            card.style.transform = `scale(1)`;
-                            card.style.filter = `brightness(1)`;
-                        }
-                    });
-                }, { passive: true });
-            }
-            
-            if(document.querySelectorAll('.sticky-img-box').length > 0) {
-                initSpatialFold();
-            }
         });
     </script>
 </body>
